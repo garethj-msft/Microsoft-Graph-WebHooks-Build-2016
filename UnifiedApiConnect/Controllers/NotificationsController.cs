@@ -45,15 +45,19 @@ namespace UnifiedApiConnect.Controllers
                     return;
 
                 string accessToken = await AuthHelper.RetrieveAccessTokenAsync(userInfo.RefreshToken);
-                string translated = @"--- Translated ---";
+                const string separator = @"  ---  ";
 
                 if (accessToken != null)
                 {
                     string subject = await GraphHelper.GetEventSubjectAsync(accessToken, notification.Resource);
-                    if (subject != null && !subject.Contains(translated))
+                    if (subject != null && !subject.Contains(separator))
                     {
-                        subject = subject + $@"\r\n{translated}\r\n" + await BingHelper.TranslateAsync(subject, userInfo.Language);
-                        await GraphHelper.SetEventSubjectAsync(accessToken, notification.Resource, subject);
+                        string translated = await BingHelper.TranslateAsync(subject, userInfo.Language);
+                        if (translated != null)
+                        {
+                            subject = subject + separator + translated;
+                            await GraphHelper.SetEventSubjectAsync(accessToken, notification.Resource, subject);
+                        }
                     }
                 }
             }

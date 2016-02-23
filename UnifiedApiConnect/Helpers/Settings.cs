@@ -8,6 +8,7 @@ namespace UnifiedApiConnect.Helpers
     {
         public static string ClientId => ConfigurationManager.AppSettings["ClientID"];
         public static string ClientSecret => ConfigurationManager.AppSettings["ClientSecret"];
+        public static string TranslatorSecret => ConfigurationManager.AppSettings["TranslatorSecret"];
         public static string StorageConnectionString => ConfigurationManager.AppSettings["StorageConnectionString"];
 
         public static string AzureADAuthority = @"https://login.microsoftonline.com/common";
