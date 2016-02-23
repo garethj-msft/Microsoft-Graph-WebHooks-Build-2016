@@ -42,7 +42,7 @@ namespace UnifiedApiConnect.Controllers
 
             // Generate the parameterized URL for Azure login.
             Uri authUri = authContext.GetAuthorizationRequestURL(
-                Settings.O365UnifiedAPIResource, 
+                Settings.MicrosoftGraphResource, 
                 Settings.ClientId,
                 loginRedirectUri, 
                 UserIdentifier.AnyUser, 
@@ -62,7 +62,7 @@ namespace UnifiedApiConnect.Controllers
                 Request.Params["code"],                                         // the auth 'code' parameter from the Azure redirect.
                 loginRedirectUri,                                               // same redirectUri as used before in Login method.
                 new ClientCredential(Settings.ClientId, Settings.ClientSecret), // use the client ID and secret to establish app identity.
-                Settings.O365UnifiedAPIResource);
+                Settings.MicrosoftGraphResource);
 
             var userInfo = new UserInfoEntity()
             {

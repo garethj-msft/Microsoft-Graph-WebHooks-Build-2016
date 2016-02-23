@@ -11,8 +11,11 @@ namespace UnifiedApiConnect.Helpers
         public static string StorageConnectionString => ConfigurationManager.AppSettings["StorageConnectionString"];
 
         public static string AzureADAuthority = @"https://login.microsoftonline.com/common";
-        public static string LogoutAuthority = @"https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=";
-        public static string O365UnifiedAPIResource = @"https://graph.microsoft.com/";
+
+        public static string LogoutAuthority =
+            @"https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=";
+
+        public static string MicrosoftGraphResource = @"https://graph.microsoft.com/";
 
         public static string CreateSubscriptionUrl = @"https://graph.microsoft.com/beta/subscriptions";
     }

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
-using Newtonsoft.Json.Linq;
+using UnifiedApiConnect.Helpers;
 using UnifiedApiConnect.Models;
 
 namespace UnifiedApiConnect.Controllers
@@ -36,14 +35,27 @@ namespace UnifiedApiConnect.Controllers
         /// Handle notification messages
         /// </summary>
         /// <param name="value"></param>
-        public void Post([FromBody]Notifications value)
+        public async void Post([FromBody]Notifications value)
         {
             // Get the title of the first event, translate it and write it back.
             // In a real app, this would be offloaded onto a more synchronous process in order to handle load smoothly.
             Notification notification = value.Value.FirstOrDefault();
             if (notification != null)
             {
-                notification.Resource=
+                UserInfoEntity userInfo = await UserDataTable.RetrieveUserInfo(notification.SubscriptionId);
+                if (userInfo != null)
+                {
+                    string accessToken = await AuthHelper.RetrieveAccessTokenAsync(userInfo.RefreshToken);
+                    if (accessToken != null)
+                    {
+                        string subject = await GraphHelper.GetEventSubjectAsync(accessToken, notification.Resource);
+                        if (subject != null)
+                        {
+                            subject = subject + @"\r\n" + await BingHelper.TranslateAsync(subject, userInfo.Language);
+                            await GraphHelper.SetEventSubjectAsync(accessToken, notification.Resource, subject);
+                        }
+                    }
+                }
             }
 
         }

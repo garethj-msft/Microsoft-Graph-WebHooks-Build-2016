@@ -13,6 +13,8 @@ namespace UnifiedApiConnect.Helpers
 {
     public class GraphHelper
     {
+        private static readonly HttpMethod PatchMethod = new HttpMethod("PATCH");
+
         public static async Task<SubscriptionResponse> CreateSubscriptionAsync(string accessToken, Subscription subscription)
         {
             var subscriptionResponse = new SubscriptionResponse();
@@ -40,6 +42,55 @@ namespace UnifiedApiConnect.Helpers
             }
             return subscriptionResponse;
         }
+
+        public static async Task<string> GetEventSubjectAsync(string accessToken, string eventId)
+        {
+            using (var client = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(HttpMethod.Get, $"https://graph.microsoft.com/beta/{eventId}?$select=subject"))
+                {
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                    using (HttpResponseMessage response = await client.SendAsync(request))
+                    {
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var thingWithSubject = new {subject = ""};
+                            thingWithSubject = Cast(thingWithSubject, JsonConvert.DeserializeObject(responseString, thingWithSubject.GetType()));
+                            return thingWithSubject.subject;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static async Task<bool> SetEventSubjectAsync(string accessToken, string eventId, string subject)
+        {
+            using (var client = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(PatchMethod, $"https://graph.microsoft.com/beta/{eventId}"))
+                {
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                    var thingWithSubject = new { subject = subject };
+                    string packetContent = JsonConvert.SerializeObject(thingWithSubject, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                    request.Content = new StringContent(packetContent, Encoding.UTF8, "application/json");
+                    using (HttpResponseMessage response = await client.SendAsync(request))
+                    {
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        return response.IsSuccessStatusCode;
+                    }
+                }
+            }
+        }
+
+        private static T Cast<T>(T typeHolder, object x)
+        {
+            // typeHolder above is just for compiler magic
+            // to infer the type to cast x to
+            return (T)x;
+        }
+
     }
 }
 
