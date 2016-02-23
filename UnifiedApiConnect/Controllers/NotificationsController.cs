@@ -11,12 +11,6 @@ namespace UnifiedApiConnect.Controllers
 {
     public class NotificationsController : ApiController
     {
-        // GET: api/Notification
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         /// <summary>
         /// POST: api/Notification
         /// Handle validation
