@@ -18,9 +18,6 @@ namespace UnifiedApiConnect.Models
         [DataMember(Name = "subscriptionId")]
         public string SubscriptionId { get; set; }
 
-        [DataMember(Name = "subscriptionExpirationDateTime")]
-        public DateTimeOffset? SubscriptionExpirationDateTime { get; set; }
-
         [DataMember(Name = "clientState")]
         public string ClientState { get; set; }
 

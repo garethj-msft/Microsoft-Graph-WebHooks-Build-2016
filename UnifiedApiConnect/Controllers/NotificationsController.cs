@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Http;
 using UnifiedApiConnect.Helpers;
 using UnifiedApiConnect.Models;
@@ -29,39 +31,48 @@ namespace UnifiedApiConnect.Controllers
         /// POST: api/Notification
         /// Handle notification messages
         /// </summary>
-        /// <param name="value"></param>
-        public async void Post([FromBody]Notifications value)
+        /// <param name="payload"></param>
+        public async Task<HttpResponseMessage> Post([FromBody]Notifications payload)
         {
-            // Get the title of the first event, translate it and write it back.
-            // In a real app, this would be offloaded onto a more synchronous process in order to handle load smoothly.
-            Notification notification = value.Value.FirstOrDefault();
-            if (notification != null)
+            const string separator = @"  ---  ";
+
+            try
             {
-                if (notification.ClientState != Settings.VerificationToken)
-                    return;
-
-                UserInfoEntity userInfo = await UserDataTable.RetrieveUserInfo(notification.SubscriptionId);
-                if (userInfo == null)
-                    return;
-
-                string accessToken = await AuthHelper.RetrieveAccessTokenAsync(userInfo.RefreshToken);
-                const string separator = @"  ---  ";
-
-                if (accessToken != null)
+                // Get the title of the first event, translate it and write it back.
+                // In a real app, this would be offloaded onto a more synchronous process in order to handle load smoothly.
+                Notification notification = payload.Value.FirstOrDefault();
+                if (notification != null)
                 {
-                    string subject = await GraphHelper.GetEventSubjectAsync(accessToken, notification.Resource);
-                    if (subject != null && !subject.Contains(separator))
+                    if (notification.ClientState == Settings.VerificationToken)
                     {
-                        string translated = await BingHelper.TranslateAsync(subject, userInfo.Language);
-                        if (translated != null)
+                        UserInfoEntity userInfo = await UserDataTable.RetrieveUserInfo(notification.SubscriptionId);
+                        if (userInfo != null)
                         {
-                            subject = subject + separator + translated;
-                            await GraphHelper.SetEventSubjectAsync(accessToken, notification.Resource, subject);
+                            string accessToken = await AuthHelper.RetrieveAccessTokenAsync(userInfo.RefreshToken);
+                            if (accessToken != null)
+                            {
+                                string subject =
+                                    await GraphHelper.GetEventSubjectAsync(accessToken, notification.Resource);
+                                if (subject != null && !subject.Contains(separator))
+                                {
+                                    string translated = await BingHelper.TranslateAsync(subject, userInfo.Language);
+                                    if (translated != null)
+                                    {
+                                        subject = subject + separator + translated;
+                                        await
+                                            GraphHelper.SetEventSubjectAsync(accessToken, notification.Resource, subject);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-
+            catch (Exception)
+            {
+                // Just return - notifications handlers need to be robust or they will be turned off
+            }
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }
