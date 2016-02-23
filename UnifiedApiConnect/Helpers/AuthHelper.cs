@@ -11,7 +11,10 @@ namespace UnifiedApiConnect.Helpers
             var authContext = new AuthenticationContext(Settings.AzureADAuthority);
 
             AuthenticationResult result =
-                await authContext.AcquireTokenByRefreshTokenAsync(refreshToken, Settings.ClientId);
+                await authContext.AcquireTokenByRefreshTokenAsync(refreshToken,
+                new ClientCredential(Settings.ClientId, Settings.ClientSecret), // use the client ID and secret to establish app identity.
+                Settings.MicrosoftGraphResource);
+
             return result?.AccessToken;
         }
     }

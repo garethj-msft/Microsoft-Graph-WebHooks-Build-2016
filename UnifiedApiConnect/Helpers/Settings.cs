@@ -18,6 +18,9 @@ namespace UnifiedApiConnect.Helpers
         public static string MicrosoftGraphResource = @"https://graph.microsoft.com/";
 
         public static string CreateSubscriptionUrl = @"https://graph.microsoft.com/beta/subscriptions";
+
+        public const string VerificationToken = "Build2016AppUniqueIdentifier";
+
     }
 }
 

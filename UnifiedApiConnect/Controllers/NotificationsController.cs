@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -36,18 +37,23 @@ namespace UnifiedApiConnect.Controllers
             Notification notification = value.Value.FirstOrDefault();
             if (notification != null)
             {
+                if (notification.ClientState != Settings.VerificationToken)
+                    return;
+
                 UserInfoEntity userInfo = await UserDataTable.RetrieveUserInfo(notification.SubscriptionId);
-                if (userInfo != null)
+                if (userInfo == null)
+                    return;
+
+                string accessToken = await AuthHelper.RetrieveAccessTokenAsync(userInfo.RefreshToken);
+                string translated = @"--- Translated ---";
+
+                if (accessToken != null)
                 {
-                    string accessToken = await AuthHelper.RetrieveAccessTokenAsync(userInfo.RefreshToken);
-                    if (accessToken != null)
+                    string subject = await GraphHelper.GetEventSubjectAsync(accessToken, notification.Resource);
+                    if (subject != null && !subject.Contains(translated))
                     {
-                        string subject = await GraphHelper.GetEventSubjectAsync(accessToken, notification.Resource);
-                        if (subject != null)
-                        {
-                            subject = subject + @"\r\n" + await BingHelper.TranslateAsync(subject, userInfo.Language);
-                            await GraphHelper.SetEventSubjectAsync(accessToken, notification.Resource, subject);
-                        }
+                        subject = subject + $@"\r\n{translated}\r\n" + await BingHelper.TranslateAsync(subject, userInfo.Language);
+                        await GraphHelper.SetEventSubjectAsync(accessToken, notification.Resource, subject);
                     }
                 }
             }

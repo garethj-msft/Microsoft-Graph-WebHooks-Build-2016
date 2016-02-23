@@ -25,7 +25,7 @@ namespace UnifiedApiConnect.Helpers
 
 		public static async Task<UserInfoEntity> RetrieveUserInfo(string id)
 		{
-			TableOperation retrieveOperation = TableOperation.Retrieve<UserInfoEntity>(id[0].ToString(), id);
+			TableOperation retrieveOperation = TableOperation.Retrieve<UserInfoEntity>(id[0].ToString(), id.Replace('-','a'));
 			CloudTable users = await GetUserTable();
 			TableResult result = await users.ExecuteAsync(retrieveOperation);
 			return result.Result as UserInfoEntity;

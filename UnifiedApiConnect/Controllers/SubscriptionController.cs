@@ -87,7 +87,6 @@ namespace UnifiedApiConnect.Controllers
 
 
 
-        private const string verificationToken = "AppUniqueIdentifier";
       
 
         // Create email object in the required request format/data contract.
@@ -95,7 +94,7 @@ namespace UnifiedApiConnect.Controllers
         {
             return new Subscription
             {
-                ClientState = verificationToken,
+                ClientState = Settings.VerificationToken,
                 ChangeType = ChangeTypes.Created,
                 NotificationUrl =  notificationEndpointUri.ToString(),
                 Resource = "me/events"
