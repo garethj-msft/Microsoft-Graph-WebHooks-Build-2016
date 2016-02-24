@@ -18,10 +18,47 @@ namespace UnifiedApiConnect.Models
     {
 
         private string subscriptionId;
+        private Language? language = null;
+
         public string UserId { get; set; }
 
         public string RefreshToken { get; set; }
-        public Language Language { get; set; }
+
+        /// <summary>
+        /// Azure table does not support enumerations, so store as a string but present as an Enum.
+        /// </summary>
+        public Language Language
+        {
+            get
+            {
+                if (this.language.HasValue)
+                {
+                    return this.language.Value;
+                }
+                else
+                {
+                    if (!string.IsNullOrWhiteSpace(this.LanguageString))
+                    {
+                        Language converted;
+                        bool succeeded = Language.TryParse(this.LanguageString, true, out converted);
+                        if (succeeded)
+                        {
+                            this.language = converted;
+                            return this.language.Value;
+                        }
+                    }
+                    return default(Language);
+                }
+            }
+            set
+            {
+                this.language = value;
+                this.LanguageString = value.ToString().ToLowerInvariant();
+            }
+        }
+
+        public string LanguageString { get; set; } 
+
         public string SubscriptionId
         {
             get { return this.subscriptionId; }
@@ -36,7 +73,7 @@ namespace UnifiedApiConnect.Models
             }
         }
 
-       public DateTimeOffset SubscriptionRenewalTime { get; set; }
+        public DateTimeOffset SubscriptionRenewalTime { get; set; }
 
         public UserInfoEntity()
         {

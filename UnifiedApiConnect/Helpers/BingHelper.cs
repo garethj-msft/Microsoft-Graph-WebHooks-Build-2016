@@ -17,7 +17,7 @@ namespace UnifiedApiConnect.Helpers
 {
     public class BingHelper
     {
-        public static async Task<string> TranslateAsync(string subject, Language language)
+        public static async Task<string> TranslateAsync(string subject, string language)
         {
             AdmAccessToken admToken;
             string headerValue;
@@ -27,7 +27,7 @@ namespace UnifiedApiConnect.Helpers
             try
             {
                 admToken = admAuth.GetAccessToken();
-                string uri = $"http://api.microsofttranslator.com/v2/Http.svc/Translate?text={System.Web.HttpUtility.UrlEncode(subject)}&from=en&to={language.ToString().ToLowerInvariant()}";
+                string uri = $"http://api.microsofttranslator.com/v2/Http.svc/Translate?text={System.Web.HttpUtility.UrlEncode(subject)}&from=en&to={language.ToLowerInvariant()}";
                 using (var client = new HttpClient())
                 {
                     using (var request = new HttpRequestMessage(HttpMethod.Get, uri))

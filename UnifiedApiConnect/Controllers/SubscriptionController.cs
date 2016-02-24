@@ -36,14 +36,24 @@ namespace UnifiedApiConnect.Controllers
             return View();
         }
 
-        
         public async Task<ActionResult> CreateSubscription(UserInfoEntity userInfo)
         {
+            // Get the posted Language from the query parameters into the userInfo.
+            Language lang = userInfo.Language;
             RestoreUserFromSession(ref userInfo);
+            userInfo.Language = lang;
+            string accessToken = (string)Session[SessionKeys.Login.AccessToken];
 
-            var subscription = CreateSubscriptionObject(userInfo);
             // Create a subscription on the Microsoft Graph
-            var subscriptionResponse = await GraphHelper.CreateSubscriptionAsync((string)Session[SessionKeys.Login.AccessToken], subscription);
+            var subscription = new Subscription
+            {
+                ClientState = Settings.VerificationToken,
+                ChangeType = ChangeTypes.Created,
+                NotificationUrl =  notificationEndpointUri.ToString(),
+                Resource = "me/events"
+            };
+
+            var subscriptionResponse = await GraphHelper.CreateSubscriptionAsync(accessToken, subscription);
 
             if (subscriptionResponse.Subscription != null)
             {
@@ -72,9 +82,6 @@ namespace UnifiedApiConnect.Controllers
             return RedirectToAction(nameof(Result), "Subscription");
         }
 
-
-
-        // Use the login user name or recipient email address if no user name.
         void RestoreUserFromSession(ref UserInfoEntity userInfo)
         {
             var currentUser = (UserInfoEntity)Session[SessionKeys.Login.UserInfo];
@@ -84,23 +91,6 @@ namespace UnifiedApiConnect.Controllers
                 userInfo = currentUser;
             }
         }
-
-
-
-      
-
-        // Create email object in the required request format/data contract.
-        private Subscription CreateSubscriptionObject(UserInfoEntity about)
-        {
-            return new Subscription
-            {
-                ClientState = Settings.VerificationToken,
-                ChangeType = ChangeTypes.Created,
-                NotificationUrl =  notificationEndpointUri.ToString(),
-                Resource = "me/events"
-            };
-        }
-
     }
 }
 

@@ -15,6 +15,10 @@ namespace UnifiedApiConnect.Helpers
     {
         private static readonly HttpMethod PatchMethod = new HttpMethod("PATCH");
 
+        /// <summary>
+        /// Create a subscription on the Microsoft Graph
+        /// </summary>
+        /// <returns>A union of a created subscription or an error</returns>
         public static async Task<SubscriptionResponse> CreateSubscriptionAsync(string accessToken, Subscription subscription)
         {
             var subscriptionResponse = new SubscriptionResponse();

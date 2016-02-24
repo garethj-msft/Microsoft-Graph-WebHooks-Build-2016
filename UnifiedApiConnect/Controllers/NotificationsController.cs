@@ -55,7 +55,7 @@ namespace UnifiedApiConnect.Controllers
                                     await GraphHelper.GetEventSubjectAsync(accessToken, notification.Resource);
                                 if (subject != null && !subject.Contains(separator))
                                 {
-                                    string translated = await BingHelper.TranslateAsync(subject, userInfo.Language);
+                                    string translated = await BingHelper.TranslateAsync(subject, userInfo.LanguageString);
                                     if (translated != null)
                                     {
                                         subject = subject + separator + translated;
