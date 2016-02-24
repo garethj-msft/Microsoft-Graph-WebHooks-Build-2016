@@ -13,10 +13,6 @@ namespace UnifiedApiConnect.Controllers
     // Manage email messages.
     public class SubscriptionController : Controller
     {
-            
-        // The URL that the subscription shoudl notify.
-        Uri notificationEndpointUri => new Uri("https://garethj.ngrok.io/api/notifications");
-
         // Take data and put into Index view.
         public ActionResult Index(UserInfoEntity userInfo)
         {
@@ -49,7 +45,7 @@ namespace UnifiedApiConnect.Controllers
             {
                 ClientState = Settings.VerificationToken,
                 ChangeType = ChangeTypes.Created,
-                NotificationUrl =  notificationEndpointUri.ToString(),
+                NotificationUrl = "https://garethj.ngrok.io/api/notifications",
                 Resource = "me/events"
             };
 
