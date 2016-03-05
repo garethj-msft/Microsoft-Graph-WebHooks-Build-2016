@@ -46,7 +46,7 @@ namespace UnifiedApiConnect.Controllers
                 ClientState = Settings.VerificationToken,
                 ChangeType = ChangeTypes.Created,
                 NotificationUrl = "https://garethj.ngrok.io/api/notifications",
-                Resource = "me/events"
+                Resource = "groups/137407e4-cab5-4db3-91aa-44005b071894/conversations" //  "me/events" 
             };
 
             var subscriptionResponse = await GraphHelper.CreateSubscriptionAsync(accessToken, subscription);

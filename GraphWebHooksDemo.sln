@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphWebHooksTranslator", "UnifiedApiConnect\GraphWebHooksTranslator.csproj", "{8CB2605C-DD0F-4F11-9C78-C1653D40E799}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{01C5AFCD-DF0D-484E-A0C3-0DB120CF2C02}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphWebHooksTranslator", "GraphWebHooksTranslator\GraphWebHooksTranslator.csproj", "{8CB2605C-DD0F-4F11-9C78-C1653D40E799}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

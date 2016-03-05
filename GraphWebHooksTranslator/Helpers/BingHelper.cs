@@ -52,7 +52,7 @@ namespace UnifiedApiConnect.Helpers
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
