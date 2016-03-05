@@ -7,10 +7,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
-using UnifiedApiConnect.Helpers;
-using UnifiedApiConnect.Models;
+using GraphWebhooksTranslator.Helpers;
+using GraphWebhooksTranslator.Models;
 
-namespace UnifiedApiConnect.Controllers
+namespace GraphWebhooksTranslator.Controllers
 {
     public class NotificationsController : ApiController
     {

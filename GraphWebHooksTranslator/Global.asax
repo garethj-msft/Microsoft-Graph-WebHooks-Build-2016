@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="UnifiedApiConnect.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="GraphWebhooksTranslator.Global" Language="C#" %>

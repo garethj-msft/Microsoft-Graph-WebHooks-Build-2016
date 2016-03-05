@@ -7,9 +7,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using UnifiedApiConnect.Models;
+using GraphWebhooksTranslator.Models;
 
-namespace UnifiedApiConnect.Helpers
+namespace GraphWebhooksTranslator.Helpers
 {
     public class GraphHelper
     {
@@ -100,8 +100,7 @@ namespace UnifiedApiConnect.Helpers
 
 //********************************************************* 
 // 
-//O365-AspNetMVC-Unified-API-Connect, https://github.com/OfficeDev/O365-AspNetMVC-Unified-API-Connect
-//
+//https://github.com/microsoftgraph/sample-aspnetmvc-webhookstranslator//
 //Copyright (c) Microsoft Corporation
 //All rights reserved. 
 //

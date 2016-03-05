@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
-namespace UnifiedApiConnect.Helpers
+namespace GraphWebhooksTranslator.Helpers
 {
     public static class AuthHelper
     {

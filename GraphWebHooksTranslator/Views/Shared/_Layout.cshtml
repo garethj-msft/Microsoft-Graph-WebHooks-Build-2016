@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>//build Demo</title>
+    <title>Microsoft Graph WebHooks Translator Sample</title>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
@@ -17,14 +17,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Office 365 //build Sample", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Microsoft Graph WebHooks Translator Sample", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-               
+@if (ViewBag.IsLoggedIn)
+{ 
                 <ul class="nav navbar-nav navbar-right">
-                    @*<li><a href="@Url.Action("Logout", "Home", null, Request.Url.Scheme)"></a></li>*@
+                    <li><a href="@Url.Action("Logout", "Home", null, Request.Url.Scheme)"><i class="ms-Icon ms-Icon--x"></i><b>x</b> Sign Out</a></li>
                 </ul>
-                
+}
                 
             </div>
         </div>
@@ -34,7 +35,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET MVC app</p>
+            <p>&copy; Microsoft Corporation @DateTime.Now.Year - ASP.NET MVC WebHooks Translation Sample</p>
         </footer>
     </div>
 

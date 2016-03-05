@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace UnifiedApiConnect.App_Start
+namespace GraphWebhooksTranslator.App_Start
 {
     public static class WebApiConfig
     {

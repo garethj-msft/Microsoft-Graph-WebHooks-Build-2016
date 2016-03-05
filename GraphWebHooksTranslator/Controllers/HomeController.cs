@@ -4,10 +4,10 @@ using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using UnifiedApiConnect.Helpers;
-using UnifiedApiConnect.Models;
+using GraphWebhooksTranslator.Helpers;
+using GraphWebhooksTranslator.Models;
 
-namespace UnifiedApiConnect.Controllers
+namespace GraphWebhooksTranslator.Controllers
 {
     // Manage login and logout.
     public class HomeController : Controller
@@ -20,12 +20,14 @@ namespace UnifiedApiConnect.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.IsLoggedIn = false;
             return View();
         }
 
         public ActionResult Logout()
         {
             Session.Clear();
+            ViewBag.IsLoggedIn = false;
             return Redirect(Settings.LogoutAuthority + logoutRedirectUri.ToString());
         }
 
@@ -36,7 +38,6 @@ namespace UnifiedApiConnect.Controllers
                 ViewBag.Message = "Please set your client ID and client secret in the Web.config file";
                 return View();
             }
-
             
             var authContext = new AuthenticationContext(Settings.AzureADAuthority);
 
@@ -74,6 +75,7 @@ namespace UnifiedApiConnect.Controllers
             Session[SessionKeys.Login.AccessToken] = authResult.AccessToken;
             Session[SessionKeys.Login.UserInfo] = userInfo;
 
+
             return RedirectToAction(nameof(Index), "Subscription");
            
         }
@@ -82,8 +84,7 @@ namespace UnifiedApiConnect.Controllers
 
 //********************************************************* 
 // 
-//O365-AspNetMVC-Unified-API-Connect, https://github.com/OfficeDev/O365-AspNetMVC-Unified-API-Connect
-//
+//https://github.com/microsoftgraph/sample-aspnetmvc-webhookstranslator//
 //Copyright (c) Microsoft Corporation
 //All rights reserved. 
 //

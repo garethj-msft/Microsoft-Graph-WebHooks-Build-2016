@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file. 
 
-namespace UnifiedApiConnect.Helpers
+namespace GraphWebhooksTranslator.Helpers
 {
     // Store session object keys, 
     // in this case, access token and info about the current logged in user.
@@ -17,8 +17,7 @@ namespace UnifiedApiConnect.Helpers
 
 //********************************************************* 
 // 
-//O365-AspNetMVC-Unified-API-Connect, https://github.com/OfficeDev/O365-AspNetMVC-Unified-API-Connect
-//
+//https://github.com/microsoftgraph/sample-aspnetmvc-webhookstranslator//
 //Copyright (c) Microsoft Corporation
 //All rights reserved. 
 //

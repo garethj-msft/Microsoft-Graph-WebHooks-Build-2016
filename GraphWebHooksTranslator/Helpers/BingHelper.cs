@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
 using Newtonsoft.Json;
-using UnifiedApiConnect.Models;
+using GraphWebhooksTranslator.Models;
 
-namespace UnifiedApiConnect.Helpers
+namespace GraphWebhooksTranslator.Helpers
 {
     public class BingHelper
     {

@@ -4,7 +4,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace UnifiedApiConnect
+namespace GraphWebhooksTranslator
 {
     // Map request URL to a specific controller action.
     public class RouteConfig
@@ -24,8 +24,7 @@ namespace UnifiedApiConnect
 
 //********************************************************* 
 // 
-//O365-AspNetMVC-Unified-API-Connect, https://github.com/OfficeDev/O365-AspNetMVC-Unified-API-Connect
-//
+//https://github.com/microsoftgraph/sample-aspnetmvc-webhookstranslator//
 //Copyright (c) Microsoft Corporation
 //All rights reserved. 
 //

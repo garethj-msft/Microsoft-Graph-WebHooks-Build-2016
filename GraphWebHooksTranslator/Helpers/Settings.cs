@@ -2,7 +2,7 @@
 
 using System.Configuration;
 
-namespace UnifiedApiConnect.Helpers
+namespace GraphWebhooksTranslator.Helpers
 {
     public static class Settings
     {
@@ -27,8 +27,7 @@ namespace UnifiedApiConnect.Helpers
 
 //********************************************************* 
 // 
-//O365-AspNetMVC-Unified-API-Connect, https://github.com/OfficeDev/O365-AspNetMVC-Unified-API-Connect
-//
+//https://github.com/microsoftgraph/sample-aspnetmvc-webhookstranslator//
 //Copyright (c) Microsoft Corporation
 //All rights reserved. 
 //

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace UnifiedApiConnect.Models
+namespace GraphWebhooksTranslator.Models
 {
     [Flags]
     public enum ChangeTypes

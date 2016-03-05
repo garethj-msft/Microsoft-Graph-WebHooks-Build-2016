@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnifiedApiConnect.Models
+namespace GraphWebhooksTranslator.Models
 {
     /// <summary>
     /// Union to hold either a successful subscription or an error response.

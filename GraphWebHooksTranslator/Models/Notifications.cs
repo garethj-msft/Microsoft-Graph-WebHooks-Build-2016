@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
-namespace UnifiedApiConnect.Models
+namespace GraphWebhooksTranslator.Models
 {
    
     [DataContract]

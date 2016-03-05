@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
-using UnifiedApiConnect.Helpers;
-using UnifiedApiConnect.Models;
+using GraphWebhooksTranslator.Helpers;
+using GraphWebhooksTranslator.Models;
 
-namespace UnifiedApiConnect.Controllers
+namespace GraphWebhooksTranslator.Controllers
 {
     // Manage email messages.
     public class SubscriptionController : Controller
@@ -19,7 +19,7 @@ namespace UnifiedApiConnect.Controllers
             RestoreUserFromSession(ref userInfo);
 
             ViewBag.UserInfo = userInfo;
-        
+            ViewBag.IsLoggedIn = !string.IsNullOrWhiteSpace(Session[SessionKeys.Login.AccessToken].ToString());
             return View();
         }
 
@@ -28,7 +28,7 @@ namespace UnifiedApiConnect.Controllers
             RestoreUserFromSession(ref userInfo);
 
             ViewBag.UserInfo = userInfo;
-
+            ViewBag.IsLoggedIn = !string.IsNullOrWhiteSpace(Session[SessionKeys.Login.AccessToken].ToString());
             return View();
         }
 
@@ -92,8 +92,7 @@ namespace UnifiedApiConnect.Controllers
 
 //********************************************************* 
 // 
-//O365-AspNetMVC-Unified-API-Connect, https://github.com/OfficeDev/O365-AspNetMVC-Unified-API-Connect
-//
+//https://github.com/microsoftgraph/sample-aspnetmvc-webhookstranslator//
 //Copyright (c) Microsoft Corporation
 //All rights reserved. 
 //

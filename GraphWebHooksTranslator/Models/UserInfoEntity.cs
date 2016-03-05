@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace UnifiedApiConnect.Models
+namespace GraphWebhooksTranslator.Models
 {
 
     public enum Language
@@ -85,8 +85,7 @@ namespace UnifiedApiConnect.Models
 
 //********************************************************* 
 // 
-//O365-AspNetMVC-Unified-API-Connect, https://github.com/OfficeDev/O365-AspNetMVC-Unified-API-Connect
-//
+//https://github.com/microsoftgraph/sample-aspnetmvc-webhookstranslator//
 //Copyright (c) Microsoft Corporation
 //All rights reserved. 
 //

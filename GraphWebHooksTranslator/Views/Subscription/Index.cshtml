@@ -1,7 +1,7 @@
 ﻿<!-- Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file. -->
 
 @{
-    UnifiedApiConnect.Models.UserInfoEntity userInfo = ViewBag.UserInfo;
+    GraphWebhooksTranslator.Models.UserInfoEntity userInfo = ViewBag.UserInfo;
 }
 
 <h2>Subscription</h2>
@@ -9,48 +9,21 @@
 
 <form>
     <p>
-        <p>You're now connected to Office 365!</p>
+        <p>You're now connected to the Microsoft Graph.</p>
         <p>Translate calendar events into one of the following languages. NL, ES, FR.</p>
     <b>Language:</b> @Html.EditorFor(m => userInfo.Language, new { htmlAttributes = new { style = "Width:350px" } })
 
     <br />
     <p>
-        <button formaction="@Url.Content("~/Subscription/CreateSubscription")">Confirm Language</button>
+        <button formaction="@Url.Content("~/Subscription/CreateSubscription")">Start translating</button>
     </p>
 
 </form>
 
 <br />
 
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Office 365 //build Sample", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="@Url.Action("Logout", "Home", null, Request.Url.Scheme)"><i class="ms-Icon ms-Icon--x"></i><b>x</b> Logout</li>
-                </ul>
-
-
-            </div>
-        </div>
-    </div>
-    
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-</body>
-</html>
-
 <!--
-O365-ASPNETMVC-Unified-API-Connect, https://github.com/OfficeDev/
+https://github.com/microsoftgraph/sample-aspnetmvc-webhookstranslator
 Copyright (c) Microsoft Corporation
 All rights reserved.
 
