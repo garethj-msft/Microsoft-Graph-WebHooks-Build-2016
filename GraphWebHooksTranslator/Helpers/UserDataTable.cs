@@ -40,7 +40,7 @@ namespace GraphWebhooksTranslator.Helpers
             {
 		        result = await users.ExecuteAsync(insertOperation);
 		    }
-		    catch (StorageException stgException)
+		    catch (StorageException)
 		    {
 
 		    }

@@ -20,9 +20,8 @@ namespace GraphWebhooksTranslator.Helpers
         public static async Task<string> TranslateAsync(string subject, string language)
         {
             AdmAccessToken admToken;
-            string headerValue;
 
-            //Get Bing Client Id and Client Secret from https://datamarket.azure.com/developer/applications/
+            // Get Bing Client Id and Client Secret from https://datamarket.azure.com/developer/applications/
             AdmAuthentication admAuth = new AdmAuthentication(Settings.ClientId, Settings.TranslatorSecret);
             try
             {

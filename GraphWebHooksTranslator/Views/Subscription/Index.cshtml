@@ -11,13 +11,8 @@
     <p>
         <p>You're now connected to the Microsoft Graph.</p>
         <p>Translate calendar events into one of the following languages. NL, ES, FR.</p>
-    <b>Language:</b> @Html.EditorFor(m => userInfo.Language, new { htmlAttributes = new { style = "Width:350px" } })
-
-    <br />
-    <p>
-        <button formaction="@Url.Content("~/Subscription/CreateSubscription")">Start translating</button>
-    </p>
-
+    <b>Language:</b> @Html.EditorFor(m => userInfo.Language, new {htmlAttributes = new {style = "Width:350px"}}) <button formaction="@Url.Content("~/Subscription/CreateSubscription")">Start translating</button>
+ 
 </form>
 
 <br />
