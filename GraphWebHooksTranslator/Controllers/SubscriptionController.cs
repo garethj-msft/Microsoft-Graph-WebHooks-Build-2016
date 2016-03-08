@@ -10,10 +10,9 @@ using GraphWebhooksTranslator.Models;
 
 namespace GraphWebhooksTranslator.Controllers
 {
-    // Manage email messages.
+    // Manage subscriptions.
     public class SubscriptionController : Controller
     {
-        // Take data and put into Index view.
         public ActionResult Index(UserInfoEntity userInfo)
         {
             RestoreUserFromSession(ref userInfo);
@@ -46,7 +45,7 @@ namespace GraphWebhooksTranslator.Controllers
                 ClientState = Settings.VerificationToken,
                 ChangeType = ChangeTypes.Created,
                 NotificationUrl = "https://garethj.ngrok.io/api/notifications",
-                Resource = "me/events" // "groups/137407e4-cab5-4db3-91aa-44005b071894/conversations" // 
+                Resource = "me/events" 
             };
 
             var subscriptionResponse = await GraphHelper.CreateSubscriptionAsync(accessToken, subscription);
