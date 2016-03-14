@@ -1,5 +1,8 @@
 ﻿// Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file. 
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net;
@@ -8,13 +11,12 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using GraphWebhooksTranslator.Models;
+using Microsoft.Graph;
 
 namespace GraphWebhooksTranslator.Helpers
 {
     public class GraphHelper
     {
-        private static readonly HttpMethod PatchMethod = new HttpMethod("PATCH");
-
         /// <summary>
         /// Create a subscription on the Microsoft Graph
         /// </summary>
@@ -47,54 +49,49 @@ namespace GraphWebhooksTranslator.Helpers
             return subscriptionResponse;
         }
 
-        public static async Task<string> GetEventSubjectAsync(string accessToken, string eventId)
+        public static async Task<string> GetEventSubjectAsync(string accessToken, string eventPath)
         {
-            using (var client = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, $"https://graph.microsoft.com/beta/{eventId}?$select=subject"))
+            using (var graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(
+                requestMessage =>
                 {
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                    using (HttpResponseMessage response = await client.SendAsync(request))
-                    {
-                        string responseString = await response.Content.ReadAsStringAsync();
-                        if (response.IsSuccessStatusCode)
-                        {
-                            var thingWithSubject = new {subject = ""};
-                            thingWithSubject = Cast(thingWithSubject, JsonConvert.DeserializeObject(responseString, thingWithSubject.GetType()));
-                            return thingWithSubject.subject;
-                        }
-                    }
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
+                    return Task.FromResult(0);
+                })))
+            {
+                var request = new EventRequest(graphClient.BaseUrl + "/" + eventPath, graphClient, null);
+                try
+                {
+                    Event calendarEvent = await request.GetAsync();
+                    return calendarEvent.Subject;
                 }
-            }
-            return null;
-        }
-
-        public static async Task<bool> SetEventSubjectAsync(string accessToken, string eventId, string subject)
-        {
-            using (var client = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(PatchMethod, $"https://graph.microsoft.com/beta/{eventId}"))
+                catch (Exception)
                 {
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                    var thingWithSubject = new { subject = subject };
-                    string packetContent = JsonConvert.SerializeObject(thingWithSubject, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                    request.Content = new StringContent(packetContent, Encoding.UTF8, "application/json");
-                    using (HttpResponseMessage response = await client.SendAsync(request))
-                    {
-                        string responseString = await response.Content.ReadAsStringAsync();
-                        return response.IsSuccessStatusCode;
-                    }
+                    return null;
                 }
             }
         }
 
-        private static T Cast<T>(T typeHolder, object x)
+        public static async Task<bool> SetEventSubjectAsync(string accessToken, string eventPath, string subject)
         {
-            // typeHolder above is just for compiler magic
-            // to infer the type to cast x to
-            return (T)x;
+            using (var graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(
+                requestMessage =>
+                {
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
+                    return Task.FromResult(0);
+                })))
+            {
+                var request = new EventRequest(graphClient.BaseUrl + "/" + eventPath, graphClient, null);
+                try
+                {
+                    Event updated = await request.UpdateAsync(new Event { Subject = subject });
+                    return updated.Subject == subject;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
         }
-
     }
 }
 
