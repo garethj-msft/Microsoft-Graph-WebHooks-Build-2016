@@ -27,7 +27,7 @@ namespace GraphWebhooksTranslator.Models
         public ChangeTypes ChangeType { get; set; }
 
         [DataMember(Name = "subscriptionId")]
-        public string SubscriptionId { get; set; }
+        public string Id { get; set; }
 
         [DataMember(Name = "clientState")]
         public string ClientState { get; set; }
@@ -39,7 +39,7 @@ namespace GraphWebhooksTranslator.Models
         public string Resource { get; set; }
 
         [DataMember(Name = "subscriptionExpirationDateTime")]
-        public DateTimeOffset? SubscriptionExpirationDateTime { get; set; }
+        public DateTimeOffset? ExpirationDateTime { get; set; }
 
     }
 }

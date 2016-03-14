@@ -45,6 +45,7 @@ namespace GraphWebhooksTranslator.Controllers
                 ClientState = Settings.VerificationToken,
                 ChangeType = ChangeTypes.Created,
                 NotificationUrl = "https://garethj.ngrok.io/api/notifications",
+                ExpirationDateTime = DateTime.UtcNow + new TimeSpan(3,0,0,0),
                 Resource = "me/events" 
             };
 
@@ -53,8 +54,8 @@ namespace GraphWebhooksTranslator.Controllers
             if (subscriptionResponse.Subscription != null)
             {
                 subscription = subscriptionResponse.Subscription;
-                userInfo.SubscriptionId = subscription.SubscriptionId;
-                userInfo.SubscriptionRenewalTime = subscription.SubscriptionExpirationDateTime.GetValueOrDefault();
+                userInfo.SubscriptionId = subscription.Id;
+                userInfo.SubscriptionRenewalTime = subscription.ExpirationDateTime.GetValueOrDefault();
 
                 // Write a record for the user with the subscription details
                 bool success = await UserDataTable.InsertOrMergeUserInfo(userInfo);
