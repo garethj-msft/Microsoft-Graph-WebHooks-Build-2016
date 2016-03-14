@@ -85,7 +85,7 @@ namespace GraphWebhooksTranslator.Models
 
 //********************************************************* 
 // 
-//https://github.com/microsoftgraph/sample-aspnetmvc-webhookstranslator//
+//https://github.com/microsoftgraph/sample-aspnetmvc-webhookstranslator/
 //Copyright (c) Microsoft Corporation
 //All rights reserved. 
 //
