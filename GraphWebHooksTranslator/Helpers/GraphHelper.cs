@@ -51,12 +51,7 @@ namespace GraphWebhooksTranslator.Helpers
 
         public static async Task<string> GetEventSubjectAsync(string accessToken, string eventPath)
         {
-            using (var graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(
-                requestMessage =>
-                {
-                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
-                    return Task.FromResult(0);
-                })))
+            using (var graphClient = CreateGraphClient(accessToken))
             {
                 var request = new EventRequest(graphClient.BaseUrl + "/" + eventPath, graphClient, null);
                 try
@@ -73,12 +68,7 @@ namespace GraphWebhooksTranslator.Helpers
 
         public static async Task<bool> SetEventSubjectAsync(string accessToken, string eventPath, string subject)
         {
-            using (var graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(
-                requestMessage =>
-                {
-                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
-                    return Task.FromResult(0);
-                })))
+            using (var graphClient = CreateGraphClient(accessToken))
             {
                 var request = new EventRequest(graphClient.BaseUrl + "/" + eventPath, graphClient, null);
                 try
@@ -91,6 +81,16 @@ namespace GraphWebhooksTranslator.Helpers
                     return false;
                 }
             }
+        }
+
+        private static GraphServiceClient CreateGraphClient(string accessToken)
+        {
+            return new GraphServiceClient(new DelegateAuthenticationProvider(
+                requestMessage =>
+                {
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
+                    return Task.FromResult(0);
+                }));
         }
     }
 }
