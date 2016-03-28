@@ -55,7 +55,7 @@ namespace GraphWebhooksTranslator.Controllers
                                     await GraphHelper.GetEventSubjectAsync(accessToken, notification.Resource);
                                 if (subject != null && !subject.Contains(separator))
                                 {
-                                    string translated = await BingHelper.TranslateAsync(subject, userInfo.LanguageString);
+                                    string translated = await TranslatorHelper.TranslateAsync(subject, userInfo.LanguageString);
                                     if (translated != null)
                                     {
                                         subject = subject + separator + translated;

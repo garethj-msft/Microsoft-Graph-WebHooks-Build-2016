@@ -17,13 +17,13 @@ using GraphWebhooksTranslator.Models;
 
 namespace GraphWebhooksTranslator.Helpers
 {
-    public class BingHelper
+    public class TranslatorHelper
     {
         public static async Task<string> TranslateAsync(string subject, string language)
         {
             AdmAccessToken admToken;
 
-            // Get Bing Client Id and Client Secret from https://datamarket.azure.com/developer/applications/
+            // Get Client Id and Client Secret from https://datamarket.azure.com/developer/applications/
             AdmAuthentication admAuth = new AdmAuthentication(Settings.ClientId, Settings.TranslatorSecret);
             try
             {
