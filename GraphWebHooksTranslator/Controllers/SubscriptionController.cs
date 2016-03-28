@@ -43,10 +43,10 @@ namespace GraphWebhooksTranslator.Controllers
             var subscription = new Subscription
             {
                 ClientState = Settings.VerificationToken,
-                ChangeType = ChangeTypes.Created,
+                ChangeType = ChangeTypes.Created | ChangeTypes.Updated,
                 NotificationUrl = "https://garethj.ngrok.io/api/notifications",
-                ExpirationDateTime = DateTime.UtcNow + new TimeSpan(3,0,0,0),
-                Resource = "me/events" 
+                ExpirationDateTime = DateTime.UtcNow + new TimeSpan(0, 0, 4230, 0),
+                Resource = "me/events"
             };
 
             var subscriptionResponse = await GraphHelper.CreateSubscriptionAsync(accessToken, subscription);

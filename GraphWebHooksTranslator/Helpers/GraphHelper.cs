@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GraphWebhooksTranslator.Models;
 using Microsoft.Graph;
+using Newtonsoft.Json.Converters;
 
 namespace GraphWebhooksTranslator.Helpers
 {
@@ -29,7 +30,11 @@ namespace GraphWebhooksTranslator.Helpers
                 using (var request = new HttpRequestMessage(HttpMethod.Post, Settings.CreateSubscriptionUrl))
                 {
                     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                    string packetContent = JsonConvert.SerializeObject(subscription,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                    string packetContent = JsonConvert.SerializeObject(subscription, new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        Converters = new List<JsonConverter> {new StringEnumConverter {CamelCaseText = true}}
+                    });
                     request.Content = new StringContent(packetContent, Encoding.UTF8, "application/json");
                     using (HttpResponseMessage response = await client.SendAsync(request))
                     {

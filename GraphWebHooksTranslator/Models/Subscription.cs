@@ -13,20 +13,18 @@ namespace GraphWebhooksTranslator.Models
     public enum ChangeTypes
     {
         Created = 1,
-        Updated=2,
-        Deleted=4,
-        Acknowledgement=8,
-        Missed=16
+        Updated = 2,
+        Deleted = 4,
     }
+
     [DataContract]
     public class Subscription
     {
 
         [DataMember(Name = "changeType")]
-        [JsonConverter(typeof(StringEnumConverter))]
         public ChangeTypes ChangeType { get; set; }
 
-        [DataMember(Name = "subscriptionId")]
+        [DataMember(Name = "id")]
         public string Id { get; set; }
 
         [DataMember(Name = "clientState")]
@@ -38,7 +36,7 @@ namespace GraphWebhooksTranslator.Models
         [DataMember(Name = "resource")]
         public string Resource { get; set; }
 
-        [DataMember(Name = "subscriptionExpirationDateTime")]
+        [DataMember(Name = "expirationDateTime")]
         public DateTimeOffset? ExpirationDateTime { get; set; }
 
     }
