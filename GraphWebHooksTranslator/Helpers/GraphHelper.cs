@@ -18,77 +18,37 @@ namespace GraphWebhooksTranslator.Helpers
 {
     public class GraphHelper
     {
-        /// <summary>
-        /// Create a subscription on the Microsoft Graph
-        /// </summary>
-        /// <returns>A union of a created subscription or an error</returns>
-        public static async Task<SubscriptionResponse> CreateSubscriptionAsync(string accessToken, Subscription subscription)
-        {
-            var subscriptionResponse = new SubscriptionResponse();
-            using (var client = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Post, Settings.CreateSubscriptionUrl))
-                {
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                    string packetContent = JsonConvert.SerializeObject(subscription, new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Ignore,
-                        Converters = new List<JsonConverter> {new StringEnumConverter {CamelCaseText = true}}
-                    });
-                    request.Content = new StringContent(packetContent, Encoding.UTF8, "application/json");
-                    using (HttpResponseMessage response = await client.SendAsync(request))
-                    {
-                        string responseString = await response.Content.ReadAsStringAsync();
-                        if (response.IsSuccessStatusCode)
-                        {
-                            subscription = JsonConvert.DeserializeObject<Subscription>(responseString);
-                            subscriptionResponse.Subscription = subscription;
-                        }
-                        else
-                        {
-                            subscriptionResponse.Error = responseString;
-                        }
-                    }
-                }
-            }
-            return subscriptionResponse;
-        }
-
         public static async Task<string> GetEventSubjectAsync(string accessToken, string eventPath)
         {
-            using (var graphClient = CreateGraphClient(accessToken))
+            var graphClient = CreateGraphClient(accessToken);
+            var request = new EventRequest(graphClient.BaseUrl + "/" + eventPath, graphClient, null);
+            try
             {
-                var request = new EventRequest(graphClient.BaseUrl + "/" + eventPath, graphClient, null);
-                try
-                {
-                    Event calendarEvent = await request.GetAsync();
-                    return calendarEvent.Subject;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
+                Event calendarEvent = await request.GetAsync();
+                return calendarEvent.Subject;
+            }
+            catch (ServiceException)
+            {
+                return null;
             }
         }
 
         public static async Task<bool> SetEventSubjectAsync(string accessToken, string eventPath, string subject)
         {
-            using (var graphClient = CreateGraphClient(accessToken))
+            var graphClient = CreateGraphClient(accessToken);
+            var request = new EventRequest(graphClient.BaseUrl + "/" + eventPath, graphClient, null);
+            try
             {
-                var request = new EventRequest(graphClient.BaseUrl + "/" + eventPath, graphClient, null);
-                try
-                {
-                    Event updated = await request.UpdateAsync(new Event { Subject = subject });
-                    return updated.Subject == subject;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                Event updated = await request.UpdateAsync(new Event { Subject = subject });
+                return updated.Subject == subject;
+            }
+            catch (ServiceException)
+            {
+                return false;
             }
         }
 
-        private static GraphServiceClient CreateGraphClient(string accessToken)
+        public static GraphServiceClient CreateGraphClient(string accessToken)
         {
             return new GraphServiceClient(new DelegateAuthenticationProvider(
                 requestMessage =>

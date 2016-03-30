@@ -177,8 +177,6 @@
     <Compile Include="Helpers\UserDataTable.cs" />
     <Compile Include="Models\Notifications.cs" />
     <Compile Include="Models\Notification.cs" />
-    <Compile Include="Models\SubscriptionResponse.cs" />
-    <Compile Include="Models\Subscription.cs" />
     <Compile Include="Models\UserInfoEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

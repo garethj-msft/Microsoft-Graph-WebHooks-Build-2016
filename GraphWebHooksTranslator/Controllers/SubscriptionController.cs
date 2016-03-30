@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using GraphWebhooksTranslator.Helpers;
 using GraphWebhooksTranslator.Models;
+using Microsoft.Graph;
 
 namespace GraphWebhooksTranslator.Controllers
 {
@@ -39,23 +40,33 @@ namespace GraphWebhooksTranslator.Controllers
             userInfo.Language = lang;
             string accessToken = (string)Session[SessionKeys.Login.AccessToken];
 
+
             // Create a subscription on the Microsoft Graph
+            var graph = GraphHelper.CreateGraphClient(accessToken);
             var subscription = new Subscription
             {
                 ClientState = Settings.VerificationToken,
-                ChangeType = ChangeTypes.Created | ChangeTypes.Updated,
+                ChangeType = "created,updated",
                 NotificationUrl = "https://garethj.ngrok.io/api/notifications",
                 ExpirationDateTime = DateTime.UtcNow + new TimeSpan(0, 0, 4230, 0),
                 Resource = "me/events"
             };
-
-            var subscriptionResponse = await GraphHelper.CreateSubscriptionAsync(accessToken, subscription);
-
-            if (subscriptionResponse.Subscription != null)
+            Subscription createdSubscription = null;
+            string error = null;
+            try
             {
-                subscription = subscriptionResponse.Subscription;
-                userInfo.SubscriptionId = subscription.Id;
-                userInfo.SubscriptionRenewalTime = subscription.ExpirationDateTime.GetValueOrDefault();
+                createdSubscription = await graph.Subscriptions.Request().AddAsync(subscription);
+            }
+            catch (ServiceException e)
+            {
+                error = $"{e.Error.Code}: {e.Error.Message}";
+            }
+
+    
+            if (createdSubscription != null)
+            {
+                userInfo.SubscriptionId = createdSubscription.Id;
+                userInfo.SubscriptionRenewalTime = createdSubscription.ExpirationDateTime.GetValueOrDefault();
 
                 // Write a record for the user with the subscription details
                 bool success = await UserDataTable.InsertOrMergeUserInfo(userInfo);
@@ -70,7 +81,7 @@ namespace GraphWebhooksTranslator.Controllers
             }
             else
             {
-                userInfo.LastError = subscriptionResponse.Error;
+                userInfo.LastError = error;
             }
 
 

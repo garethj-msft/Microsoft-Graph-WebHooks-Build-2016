@@ -21,9 +21,8 @@ namespace GraphWebhooksTranslator.Models
         [DataMember(Name = "clientState")]
         public string ClientState { get; set; }
 
-         [DataMember(Name = "changeType")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ChangeTypes ChangeType { get; set; }
+        [DataMember(Name = "changeType")]
+        public string ChangeType { get; set; }
 
         [DataMember(Name = "resource")]
         public string Resource { get; set; }
