@@ -41,26 +41,9 @@ namespace GraphWebhooksTranslator.Controllers
             string accessToken = (string)Session[SessionKeys.Login.AccessToken];
 
 
-            // Create a subscription on the Microsoft Graph
-            var graph = GraphHelper.CreateGraphClient(accessToken);
-            var subscription = new Subscription
-            {
-                ClientState = Settings.VerificationToken,
-                ChangeType = "created,updated",
-                NotificationUrl = "https://garethj.ngrok.io/api/notifications",
-                ExpirationDateTime = DateTime.UtcNow + new TimeSpan(0, 0, 4230, 0),
-                Resource = "me/events"
-            };
-            Subscription createdSubscription = null;
-            string error = null;
-            try
-            {
-                createdSubscription = await graph.Subscriptions.Request().AddAsync(subscription);
-            }
-            catch (ServiceException e)
-            {
-                error = $"{e.Error.Code}: {e.Error.Message}";
-            }
+          
+
+
 
     
             if (createdSubscription != null)
