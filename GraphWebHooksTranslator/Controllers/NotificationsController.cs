@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using GraphWebhooksTranslator.Helpers;
 using GraphWebhooksTranslator.Models;
+using Microsoft.Graph;
 
 namespace GraphWebhooksTranslator.Controllers
 {
@@ -51,16 +52,18 @@ namespace GraphWebhooksTranslator.Controllers
                             string accessToken = await AuthHelper.RetrieveAccessTokenAsync(userInfo.RefreshToken);
                             if (accessToken != null)
                             {
-                                string subject =
-                                    await GraphHelper.GetEventSubjectAsync(accessToken, notification.Resource);
+                                var graphClient = GraphHelper.CreateGraphClient(accessToken);
+                                var request = new EventRequest(graphClient.BaseUrl + "/" + notification.Resource, graphClient, null);
+                                Event calendarEvent = await request.GetAsync();
+
+                                string subject = calendarEvent?.Subject;
                                 if (subject != null && !subject.Contains(separator))
                                 {
                                     string translated = await TranslatorHelper.TranslateAsync(subject, userInfo.LanguageString);
                                     if (translated != null)
                                     {
                                         subject = subject + separator + translated;
-                                        await
-                                            GraphHelper.SetEventSubjectAsync(accessToken, notification.Resource, subject);
+                                        await request.UpdateAsync(new Event { Subject = subject });
                                     }
                                 }
                             }
